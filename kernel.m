@@ -1,10 +1,6 @@
 function [K] = kernel(ker,x,y)
 % Calculate kernel function.   
-%
-% x: 输入样本,d×n1的矩阵,n1为样本个数,d为样本维数
-% y: 输入样本,d×n2的矩阵,n2为样本个数,d为样本维数
-%
-% ker  核参数(结构体变量)
+% ker  
 % the following fields:
 %   type   - linear :  k(x,y) = x'*y
 %            poly   :  k(x,y) = (x'*y+c)^d
@@ -20,8 +16,6 @@ function [K] = kernel(ker,x,y)
 % ker = struct('type','gauss','width',s);
 % ker = struct('type','tanh','gamma',g,'offset',c);
 %
-% K: 输出核参数,n1×n2的矩阵
-
 %-------------------------------------------------------------%
 
 switch ker.type

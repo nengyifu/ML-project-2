@@ -1,9 +1,9 @@
 function Yd = svmSim(svm,Xt)
-% 输入参数:
-% svm  支持向量机(结构体变量)
+% 
+% svm 
 % the following fields:
-%   type - 支持向量机类型  {'svc_c','svc_nu','svm_one_class','svr_epsilon','svr_nu'}
-%   ker - 核参数
+%   type -  {'svc_c','svc_nu','svm_one_class','svr_epsilon','svr_nu'}
+%   ker - 
 %       type   - linear :  k(x,y) = x'*y
 %                poly   :  k(x,y) = (x'*y+c)^d
 %                gauss  :  k(x,y) = exp(-0.5*(norm(x-y)/s)^2)
@@ -12,15 +12,7 @@ function Yd = svmSim(svm,Xt)
 %       offset - Offset c of polynomial and tanh kernel (scalar, negative for tanh).
 %       width  - Width s of Gauss kernel (positive scalar).
 %       gamma  - Slope g of the tanh kernel (positive scalar).
-%   x - 训练样本
-%   y - 训练目标;
-%   a - 拉格朗日乘子
 %
-% Xt  测试样本,d×n的矩阵,n为样本个数,d为样本维数
-
-% 输出参数:
-% Yd  测试输出,1×n的矩阵,n为样本个数,值为+1或-1
-
 % ------------------------------------------------------------%
 
 type = svm.type;
@@ -30,15 +22,14 @@ Y = svm.y;
 a = svm.a;
 
 % ------------------------------------------------------------%
-% 测试输出
 
-epsilon = 1e-8;                  % 如果小于此值则认为是0
-i_sv = find(abs(a)>epsilon);          % 支持向量下标
+epsilon = 1e-8;                
+i_sv = find(abs(a)>epsilon);    
 
 switch type
     case 'svc_c',
         
-        tmp = (a.*Y)*kernel(ker,X,X(:,i_sv));          % 行向量
+        tmp = (a.*Y)*kernel(ker,X,X(:,i_sv));    
         b = 1./Y(i_sv)-tmp;
         b = mean(b);
         tmp =  (a.*Y)*kernel(ker,X,Xt);
@@ -46,9 +37,9 @@ switch type
         
     case 'svc_nu', 
         %------------------------------------%
-        % 与 'svc_c' 情况相同
 
-        tmp = (a.*Y)*kernel(ker,X,X(:,i_sv));          % 行向量
+
+        tmp = (a.*Y)*kernel(ker,X,X(:,i_sv));  
         b = 1./Y(i_sv)-tmp;
         b = mean(b);
         tmp =  (a.*Y)*kernel(ker,X,Xt);
@@ -63,43 +54,43 @@ switch type
             tmp1(i) = kernel(ker,X(:,index),X(:,index));
         end
 
-        tmp2 = 2*a*kernel(ker,X,X(:,i_sv));           % 行向量
+        tmp2 = 2*a*kernel(ker,X,X(:,i_sv));         
         tmp3 = sum(sum(a'*a.*kernel(ker,X,X)));    
 
         R_square = tmp1-tmp2'+tmp3;
-        R_square = mean(R_square);                       % 超球半径 R^2 (对所有支持向量求平均的结果)
+        R_square = mean(R_square);                     
 
-        nt = size(Xt,2);                  % 测试样本数
+        nt = size(Xt,2);                 
 
-        tmp4 = zeros(nt,1);               % 列向量
+        tmp4 = zeros(nt,1);              
         for i = 1:nt
             tmp4(i) = kernel(ker,Xt(:,i),Xt(:,i));
         end
     
-        tmp5 = 2*a*kernel(ker,X,Xt);                % 行向量
+        tmp5 = 2*a*kernel(ker,X,Xt);          
         Yd = sign(tmp4-tmp5'+tmp3-R_square);
 
     case 'svr_epsilon',
         
-        tmp = a*kernel(ker,X,X(:,i_sv));   % 行向量
-        b = Y(i_sv)-tmp;                    % 符号不一样,决策函数就不一样,实际上是一回事!
+        tmp = a*kernel(ker,X,X(:,i_sv));  
+        b = Y(i_sv)-tmp;                    
         %b = Y(i_sv)+tmp;
         b = mean(b);
 
-        tmp =  a*kernel(ker,X,Xt);         % 符号不一样,决策函数就不一样,实际上是一回事!
+        tmp =  a*kernel(ker,X,Xt);        
         %tmp =  -a*kernel(ker,X,Xt);
         Yd = (tmp+b);        
         
     case 'svr_nu',
         %------------------------------------%
-        % 与'svr_epsilon' 情况相同
+        % 与'svr_epsilon' 
         
-        tmp = a*kernel(ker,X,X(:,i_sv));   % 行向量
-        b = Y(i_sv)-tmp;                    % 符号不一样,决策函数就不一样,实际上是一回事!
+        tmp = a*kernel(ker,X,X(:,i_sv));   
+        b = Y(i_sv)-tmp;                  
         %b = Y(i_sv)+tmp;
         b = mean(b);
 
-        tmp =  a*kernel(ker,X,Xt);         % 符号不一样,决策函数就不一样,实际上是一回事!
+        tmp =  a*kernel(ker,X,Xt);        
         %tmp =  -a*kernel(ker,X,Xt);
         Yd = (tmp+b);        
         

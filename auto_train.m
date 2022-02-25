@@ -8,12 +8,12 @@ Y = [y1,y2];
 
 svm = svmTrain('svc_c',X,Y,ker,C);
 a = svm.a;
-epsilon = 1e-8;   % 如果小于此值则认为是0
-i_sv = find(abs(a)>epsilon);       % 支持向量下标
+epsilon = 1e-8;  
+i_sv = find(abs(a)>epsilon);
 
 [rows,cols] = size(X1);
-nt = rows*cols ;  % 高维测试样本数
-Xt = [reshape(X1,1,nt);reshape(X2,1,nt)]; % 高维转化到低维
-Yd = svmSim(svm,Xt);      % 测试输出
+nt = rows*cols ; 
+Xt = [reshape(X1,1,nt);reshape(X2,1,nt)];
+Yd = svmSim(svm,Xt);      
 Yd = reshape(Yd,rows,cols);
 end

@@ -8,9 +8,14 @@ plot(X(1,i_sv),X(2,i_sv),'go')
 grid on
 
 contour(X1,X2,Yd,'m'); 
-title('SVM results')
-xlabel("x coordinate")
-ylabel("y coordinate")
-legend('class 1', 'class2', 'support vectors', 'decision boundary')
+% title('SVM results')
+% xlabel("x coordinate")
+% ylabel("y coordinate")
+% legend('class 1', 'class2', 'support vectors', 'decision boundary')
+
+title('Income Classifcation')
+xlabel("age")
+ylabel("education (year)")
+legend('high income', 'low income', 'support vectors', 'decision boundary')
  legend('Location','southeast')
 end

@@ -10,10 +10,8 @@ function svm = svmTrain(svmType,X,Y,ker,p1,p2)
 %   svm = svmTrain('svr_epsilon',x,y,ker,C,e); 
 %   svm = svmTrain('svr_nu',x,y,ker,C,nu); 
 
-% 输入参数:
-% X  训练样本,d×n的矩阵,n为样本个数,d为样本维数
-% Y  训练目标,1×n的矩阵,n为样本个数,值为+1或-1
-% ker  核参数(结构体变量)
+
+% ker 
 % the following fields:
 %   type   - linear :  k(x,y) = x'*y
 %            poly   :  k(x,y) = (x'*y+c)^d
@@ -24,14 +22,12 @@ function svm = svmTrain(svmType,X,Y,ker,p1,p2)
 %   width  - Width s of Gauss kernel (positive scalar).
 %   gamma  - Slope g of the tanh kernel (positive scalar).
 
-% 输出参数:
-% svm  支持向量机(结构体变量)
+
+% svm  
 % the following fields:
-%   type - 支持向量机类型  {'svc_c','svc_nu','svm_one_class','svr_epsilon','svr_nu'}
-%   ker - 核参数
-%   x - 训练样本,d×n的矩阵,n为样本个数,d为样本维数
-%   y - 训练目标,1×n的矩阵,n为样本个数,值为+1或-1
-%   a - 拉格朗日乘子,1×n的矩阵
+%   type -   {'svc_c','svc_nu','svm_one_class','svr_epsilon','svr_nu'}
+%   ker - 
+
 
 % ------------------------------------------------------------%
 
@@ -105,7 +101,7 @@ switch svmType
         n = length(Y);
         Q = kernel(ker,X,X);
         H = [Q,-Q;-Q,Q];
-        f = [e*ones(n,1)-Y';e*ones(n,1)+Y'];          % 符号不一样,决策函数就不一样,实际上是一回事!
+        f = [e*ones(n,1)-Y';e*ones(n,1)+Y'];         
         %f = [e*ones(n,1)+Y';e*ones(n,1)-Y'];
         A = [];
         b = [];
@@ -126,7 +122,7 @@ switch svmType
         n = length(Y);
         Q = kernel(ker,X,X);
         H = [Q,-Q;-Q,Q];
-        f = [-Y';+Y'];          % 符号不一样,决策函数就不一样,实际上是一回事!
+        f = [-Y';+Y'];       
         %f = [+Y';-Y'];
         A = [];
         b = [];
@@ -146,7 +142,7 @@ end
 eXitflag
 
 % ------------------------------------------------------------%
-% 输出 svm
+
 
 svm.type = svmType;
 svm.ker = ker;
